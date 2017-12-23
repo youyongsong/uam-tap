@@ -10,11 +10,11 @@ RUN apt-get update \
     && apt-get install -y git jq cloc tree mosh \
     && rm -rf /var/lib/apt/lists/*
 
-RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash \
-    && sudo apt-get install git-lfs \
+RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash \
+    && apt-get install git-lfs \
     && git lfs install
 
-RUN curl https://github.com/jingweno/ccat/releases/download/v1.1.0/linux-amd64-1.1.0.tar.gz \
+RUN wget https://github.com/jingweno/ccat/releases/download/v1.1.0/linux-amd64-1.1.0.tar.gz \
     && tar -xzvf linux-amd64-1.1.0.tar.gz \
     && mv linux-amd64-1.1.0/ccat /usr/bin/ \
     && rm -r linux-amd64-1.1.0 && rm linux-amd64-1.1.0.tar.gz

@@ -7,7 +7,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update \
-    && apt-get install git jq cloc tree mosh \
+    && apt-get install -y git jq cloc tree mosh \
     && rm -rf /var/lib/apt/lists/*
 
 RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash \

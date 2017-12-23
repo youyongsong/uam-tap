@@ -1,0 +1,64 @@
+[user]
+    name = youyongsong
+    email = youyongsong@gmail.com
+
+[core]
+    editor = vim.tiny
+    autocrlf = input
+    excludesfile = ~/.gitignore_global
+
+[alias]
+    ci = commit -a -v
+    s = status -s
+    lg = log --oneline --decorate --all --graph
+
+# push easily. http://stackoverflow.com/a/23918418/89484
+[push]
+    default = current
+
+[pull]
+    rebase = true
+
+[rerere]
+    enabled = true
+
+[merge]
+    tool = vimdiff
+    conflictstyle = diff3
+
+[pager]
+    diff = diff-so-fancy | less --tabs=4 -RFX
+    show = diff-so-fancy | less --tabs=4 -RFX
+
+# so much colors
+[color]
+    ui = always
+[color "diff"]
+    meta = yellow bold
+    commit = green bold
+    frag = magenta bold
+    old = red bold
+    new = green bold
+    whitespace = red reverse
+[color "diff-highlight"]
+    oldNormal = red bold
+    oldHighlight = "red bold 52"
+    newNormal = "green bold"
+    newHighlight = "green bold 22"
+[color "branch"]
+    current = yellow reverse
+    local = yellow
+    remote = green
+[color "status"]
+    added = yellow
+    changed = green
+    untracked = cyan
+
+[filter "media"]
+    required = true
+    clean = git media clean %f
+    smudge = git media smudge %f
+[filter "lfs"]
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    required = true

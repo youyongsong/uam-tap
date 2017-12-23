@@ -1,0 +1,27 @@
+description: "ysyou's preferenced basic dev tools."
+image: "youyongsong/devbox:1.0"
+entrypoints:
+    cloc:
+        container_entrypoint: cloc
+    cat:
+        container_entrypoint: ccat
+    jq:
+        container_entrypoint: jq
+    mosh:
+        container_entrypoint: mosh
+    git:
+        container_entrypoint: git
+    tree:
+        container_entrypoint: tree
+    make:
+        container_entrypoint: make
+    gcc:
+        container_entrypoint: gcc
+volumes: []
+configs: 
+    - host_path: ~/.gitconfig
+      container_path: /root/.gitconfig
+    - host_path: ~/.gitignore_global
+      container_path: /root/.gitignore_global
+    - host_path: ~/.ssh
+      container_path: /root/.ssh

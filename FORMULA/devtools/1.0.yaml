@@ -9,7 +9,7 @@ entrypoints:
         container_entrypoint: jq
     mosh:
         container_entrypoint: mosh
-    git:
+    gt:
         container_entrypoint: git
     tree:
         container_entrypoint: tree

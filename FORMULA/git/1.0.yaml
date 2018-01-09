@@ -1,0 +1,13 @@
+description: "ysyou's preferenced git."
+image: "youyongsong/devbox:1.0"
+entrypoints:
+    gt:
+        container_entrypoint: git
+volumes: []
+configs: 
+    - host_path: ~/.gitconfig
+      container_path: /root/.gitconfig
+    - host_path: ~/.gitignore_global
+      container_path: /root/.gitignore_global
+    - host_path: ~/.ssh
+      container_path: /root/.ssh

@@ -3,7 +3,7 @@ FROM ubuntu:16.04
 LABEL maintainer ysyou <youyongsong@gmail.com>
 
 RUN apt-get update \
-    && apt-get install -y wget vim.tiny curl zip make \
+    && apt-get install -y wget vim.tiny curl zip make software-properties-common \
     && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update \

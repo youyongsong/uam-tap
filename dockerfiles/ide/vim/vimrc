@@ -1,0 +1,201 @@
+let mapleader = "\<Space>"
+source ~/.vim/plugin.vim
+if filereadable ("~/.vim_local")
+    source ~/.vim_local
+endif
+
+" Configuration file for vim
+set modelines=0		" CVE-2007-2438
+
+" Normally we use vim-extensions. If you want true vi-compatibility
+" remove change the following statements
+set nocompatible	" Use Vim defaults instead of 100% vi compatibility
+
+" Don't write backup file if vim is being called by "crontab -e"
+au BufWrite /private/tmp/crontab.* set nowritebackup
+" Don't write backup file if vim is being called by "chpass"
+au BufWrite /private/etc/pw.* set nowritebackup
+
+syn on    "语法支持
+
+"common conf {{    通用配置
+"set ai    "自动缩进
+set bs=2    "在insert模式下用退格键删除
+set showmatch    "代码匹配
+set ruler    "显示当前光标位置
+set laststatus=2    " 总是显示状态行
+set cursorline      "高亮显示当前行
+"set cursorcolumn   "高亮显示当前列
+set expandtab    "以下三个配置配合使用，设置tab和缩进空格数
+set shiftwidth=4
+set tabstop=4
+set number    "显示行号
+set autoread    "文件在vim之外修改过，自动重新读入
+
+set encoding=utf8
+
+autocmd BufWritePre * :%s/\s\+$//ge " 在保存文件时, 删除行末的空格
+
+set ignorecase    "检索时忽略大小写
+set fileencodings=utf-8,gbk    "使用utf-8或gbk打开文件
+set hls    "检索时高亮显示匹配项
+set helplang=cn    "帮助系统设置为中文
+set foldmethod=manual    "代码折叠
+
+"}}
+
+"Theme
+colorscheme Monokai
+set background=dark
+hi Normal ctermfg=153 ctermbg=235
+hi LineNr ctermfg=242 ctermbg=None cterm=bold  " Set line number color
+hi VertSplit ctermfg=None ctermbg=None cterm=NONE
+hi NonText ctermfg=None ctermbg=None cterm=NONE
+hi Folded ctermfg=242 ctermbg=None cterm=NONE
+" set cursor shape
+if exists('$TMUX')
+    let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"  " Vertical bar in insert mode
+    let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"  " Block in normal mode
+else
+    let &t_SI = "\<Esc>]50;CursorShape=1\x7"  " Vertical bar in insert mode
+    let &t_EI = "\<Esc>]50;CursorShape=0\x7"  " Block in normal mode
+endif
+" set curssor line and coloumn
+hi CursorColumn ctermfg=None ctermbg=234
+hi CursorLine ctermfg=None ctermbg=234
+" set color column
+hi ColorColumn ctermfg=None ctermbg=234
+" set split bar style
+set fillchars+=vert:│
+
+"file type
+filetype on " 开启文件类型侦测
+filetype plugin on " 根据侦测到的不同类型加载对应的插件
+filetype plugin indent on
+
+
+"按下,ch高亮显示当前列，再按一次取消高亮显示
+map <Leader>h :call SetColorColumn()<CR>
+function! SetColorColumn()
+    let col_num = virtcol(".")
+    let cc_list = split(&cc, ',')
+    if count(cc_list, string(col_num)) <= 0
+        execute "set cc+=".col_num
+    else
+        execute "set cc-=".col_num
+    endif
+endfunction
+
+
+"reload vimrc config
+nnoremap <Leader>r :so $MYVIMRC<CR>
+
+" Copy & paste to system clipboard with <Leader>p and <Leader>y
+vmap <Leader>y "+y
+vmap <Leader>d "+d
+nmap <Leader>p "+p
+nmap <Leader>P "+P
+
+
+" Projects releated operations
+nmap <Leader>pf :CtrlP<CR>
+
+
+" Files releated operations
+nnoremap <Leader>fs :w<CR>  " Save current file
+
+
+" Buffers releated operations
+map <Leader>bd :bdelete<CR>
+
+
+" Window releated operations
+"" Split widows
+nnoremap <c-x> :exe ":sp"<CR>
+nnoremap <c-g> :exe ":vsp"<CR>
+nnoremap <Leader>w- :exe ":sp"<CR>
+nnoremap <Leader>w/ :exe ":vsp"<CR>
+"" Smart resize windows
+map <Leader>= <c-w>=
+nnoremap <silent> <Leader>+ :exe "resize " . (winheight(0) * 3/2)<CR>
+nnoremap <silent> <Leader>- :exe "resize " . (winheight(0) * 2/3)<CR>
+nnoremap <silent> <Leader>] :exe "vertical resize " . (winwidth(0) * 3/2)<CR>
+nnoremap <silent> <Leader>[ :exe "vertical resize " . (winwidth(0) * 2/3)<CR>
+" Jump between windows
+map <c-j> <c-w>j
+map <c-k> <c-w>k
+map <c-l> <c-w>l
+map <c-h> <c-w>h
+map <Leader>wj <c-w>j
+map <Leader>wk <c-w>k
+map <Leader>wl <c-w>l
+map <Leader>wh <c-w>h
+" Windows life management
+map <Leader>wd :q<CR>
+
+
+" Django/Python specifical settings
+" an easy way to set the correct filetype
+nnoremap _hd :set ft=htmldjango<CR>
+nnoremap _pd :set ft=python.django<CR>
+
+" autocommands that set the filetype for me when I’m editing a file whose name
+" “sounds like” a Django file
+au BufNewFile,BufRead admin.py     setlocal filetype=python.django
+au BufNewFile,BufRead urls.py      setlocal filetype=python.django
+au BufNewFile,BufRead models.py    setlocal filetype=python.django
+au BufNewFile,BufRead views.py     setlocal filetype=python.django
+au BufNewFile,BufRead settings.py  setlocal filetype=python.django
+au BufNewFile,BufRead forms.py     setlocal filetype=python.django
+
+
+"Plugin customization
+" sjl/gundo.vim
+map <leader>g :GundoToggle<CR>
+
+" majutsushi/tagbar
+nmap <leader>b :TagbarToggle<CR>
+
+" scrooloose/nerdtree
+map <leader>l :NERDTreeToggle<CR>
+" close vim if the only window left open is a NERDTree
+" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+
+" kien/ctrlp.vim
+let g:ctrlp_open_multiple_files = 'v'
+nmap <leader>p :CtrlPClearCache<CR>
+
+set wildignore+=*/tmp/*,*.o,*.obj,*.so,*.swp,*.zip,*.swo,*.pyc,.git,node_modules/**,**/node_modules/**,bower_components/**,_build/**,deps/**
+let g:ctrlp_custom_ignore = {
+  \ 'dir': '\v[\/]\.(git)$',
+  \ 'file': '\v\.(log|jpg|png|jpeg)$',
+  \ }
+
+" dyng/ctrlsf.vim
+nnoremap <C-F>o :CtrlSFOpen<CR>
+nnoremap <C-F>t :CtrlSFToggle<CR>
+nmap <leader>s <Plug>CtrlSFPrompt
+
+" vim-airline/vim-airline
+let g:airline_powerline_fonts = 1
+" uncomment next line to displays all buffers when there's only one tab open
+"let g:airline#extensions#tabline#enabled = 1
+let g:airline_theme='papercolor'
+
+" tmhedberg/SimpylFold
+" enable previewing of your folded classes' and functions' docstrings in the
+" fold text.
+let g:SimpylFold_docstring_preview = 1
+" in order for SimpylFold to be properly loaded in certain cases, you'll have
+" to add the following lines in vimrc
+autocmd BufWinEnter *.py setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr
+autocmd BufWinLeave *.py setlocal foldexpr< foldmethod<
+
+" Yggdroot/indentLine
+nnoremap <Leader>i :IndentLinesToggle<CR>
+let g:indentLine_loader = 1
+let g:indentLine_enabled = 0
+let g:indentLine_color_term = 239
+
+" valloric/TouCompleteMe
+nnoremap <leader>jj :YcmCompleter GoTo<CR>
